@@ -12,11 +12,15 @@ class EmailView(APIView):
         email_list = request.data.getlist('email')
         subject = request.data['subject']
         message = request.data['message']
+        # https://support.google.com/accounts/answer/6010255
 
-        send_mail(
-            subject=subject,
-            message=message,
-            from_email='fastcampus.2016@gmail.com',
-            recipient_list=email_list,
-        )
+        for email in email_list:
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email='fastcampus.2016@gmail.com',
+                recipient_list=[
+                    email,
+                ],
+            )
         return Response(status=status.HTTP_200_OK)
